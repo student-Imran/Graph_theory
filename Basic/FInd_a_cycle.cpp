@@ -3,21 +3,24 @@ using namespace std;
 
 const int N = 1e5 + 9;
 vector<int> g[N];
-int col[N], par[N];
-bool cycle;
-void dfs(int u) {
-  col[u] = 1;
+bool vis[N];
+int par[N];
+bool dfs(int u,int par) {
+  vis[u] = true;
+  bool cycle=false;
   for (auto v: g[u]) {
-    if (col[v] == 0) {
-      par[v] = u;
-      dfs(v);
-    }
-    else if (col[v] == 1) {
-      cycle = true;
-      // you can track the cycle using par array
-    }
+     if(vis[v] and v==par){
+      continue;
+     }
+     if(vis[v]){
+      return true;
+     }
+
+     cycle|=dfs(v,u);
+     
+
   }
-  col[u] = 2;
+  return cycle;
 }
 int32_t main() {
   ios_base::sync_with_stdio(0);
@@ -27,10 +30,14 @@ int32_t main() {
     int u, v; cin >> u >> v;
     g[u].push_back(v);
   }
-  cycle = false;
+  bool exist_cycle = false;
   for (int i = 1; i <= n; i++) {
-    if (col[i] == 0) dfs(i);
+    if(vis[i])continue;
+    if(dfs(i,0)){
+      exist_cycle=true;
+      break;
+    }
   }
-  cout << (cycle ? "YES\n" : "NO\n") << '\n';
+  cout<<exist_cycle<<'\n';
   return 0;
 }
