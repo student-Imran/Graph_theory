@@ -1,6 +1,5 @@
 #include<bits/stdc++.h>
 using namespace std;
-
 const int N = 1e5 + 9;
 vector<int> g[N];
 bool vis[N];
@@ -15,11 +14,9 @@ bool dfs(int u,int par) {
      if(vis[v]){
       return true;
      }
-
      cycle|=dfs(v,u);
      
-
-  }
+     }
   return cycle;
 }
 int32_t main() {
